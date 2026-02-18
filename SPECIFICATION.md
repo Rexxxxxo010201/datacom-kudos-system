@@ -40,7 +40,7 @@
 
 #### Moderation and Governance
 
-<!-- ARCHITECT UPDATE: Added moderation capability -->
+> ARCHITECT UPDATE: Added moderation capability
 8. **Admin moderates recognition content**
    - Can hide inappropriate kudos without deleting records
    - Moderation metadata captured for auditing
@@ -81,7 +81,7 @@
 - Pagination supported for performance.
 
 #### Moderation Behaviour
-<!-- ARCHITECT UPDATE -->
+> ARCHITECT UPDATE:
 - Administrators can mark kudos as hidden.
 - Hidden kudos remain stored but are not visible to regular users.
 - Moderation metadata (admin ID and timestamp) is recorded.
@@ -121,7 +121,7 @@ The Kudos system will follow a standard web application architecture:
 - message (text)
 - created_at (timestamp)
 
-<!-- ARCHITECT UPDATE: Moderation fields added -->
+> ARCHITECT UPDATE: Moderation fields added
 - is_visible (boolean, default true)
 - moderated_by (UUID, nullable)
 - moderated_at (timestamp, nullable)
@@ -151,7 +151,7 @@ Query Params:
 #### GET /api/users
 Returns a list of users for dropdown selection.
 
-<!-- ARCHITECT UPDATE: Moderation endpoint -->
+> ARCHITECT UPDATE: Moderation endpoint
 #### PATCH /api/kudos/:id/moderate
 Allows an administrator to update visibility of a kudos message.
 
@@ -185,7 +185,7 @@ Authorization:
 - Prevent XSS by sanitizing message content.
 - Ensure authenticated sessions before allowing submissions.
 
-<!-- ARCHITECT UPDATE -->
+> ARCHITECT UPDATE:
 - Role based access control for moderation features.
 - Rate limiting to reduce spam behaviour.
 - Content filtering checks before storing kudos.
