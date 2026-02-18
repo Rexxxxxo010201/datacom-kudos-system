@@ -4,30 +4,92 @@
 
 ### User Stories
 
-1. As an authenticated user, I can select a colleague from a list of employees.
-2. As an authenticated user, I can write a kudos message (maximum 500 characters).
-3. As an authenticated user, I can submit a kudos message to the system.
-4. As a user, I can view a public feed of recently submitted kudos on the dashboard.
-5. As a system administrator, I can manage users and access the internal portal.
+#### Recognition Workflow
+
+1. **User selects a colleague**
+   - Choose another employee from a directory
+   - Current user excluded from selection
+
+2. **User writes an appreciation message**
+   - Maximum 500 characters
+   - Message cannot be empty
+
+3. **User submits kudos**
+   - Stores sender, receiver, message, and timestamp
+   - Shows confirmation after submission
+
+4. **User views organisation recognition feed**
+   - Displays recent visible kudos
+   - Ordered by newest first
+
+5. **User tracks personal activity**
+   - Can view sent and received kudos
+   - Supports chronological sorting
+
+
+#### Identity and Access
+
+6. **Authenticated usage**
+   - Only logged in users can create or view kudos
+   - Uses internal SSO
+
+7. **Role based access**
+   - Admin users have moderation privileges
+   - Regular users see only approved content
+
+
+#### Moderation and Governance
 
 <!-- ARCHITECT UPDATE: Added moderation capability -->
-6. As an administrator, I can hide or remove inappropriate kudos messages from the public feed to maintain a safe and professional environment.
+8. **Admin moderates recognition content**
+   - Can hide inappropriate kudos without deleting records
+   - Moderation metadata captured for auditing
+
+9. **Visibility enforcement**
+   - Hidden kudos excluded from public feed
+   - Feed updates reflect moderation instantly
+
+10. **User reporting behaviour**
+   - Users can flag inappropriate kudos for admin review
+
+
+#### Feed Experience Enhancements
+
+11. **Feed filtering**
+   - Filter by sender or recipient
+   - Supports keyword matching
+
+12. **Duplicate submission protection**
+   - Prevent rapid identical kudos submissions
+
+13. **Notification awareness**
+   - Users receive feedback when kudos is received
 
 ---
 
 ### Acceptance Criteria
 
+#### Recognition Submission
 - Users must be authenticated before creating kudos.
-- User selection must be populated from an existing employee directory.
-- Kudos message must enforce a 500 character limit.
-- Submitted kudos appear in the dashboard feed within seconds.
-- The dashboard feed displays kudos in reverse chronological order.
-- Empty submissions or invalid users should return validation errors.
+- Message length limited to 500 characters.
+- Empty or invalid submissions are rejected.
+- Successful submissions appear in feed promptly.
 
+#### Feed Behaviour
+- Feed displays only entries where `is_visible = true`.
+- Items sorted by most recent timestamp.
+- Pagination supported for performance.
+
+#### Moderation Behaviour
 <!-- ARCHITECT UPDATE -->
-- Administrators can mark a kudos message as hidden.
-- Hidden kudos should not appear in the public feed.
-- Only users with admin role can perform moderation actions.
+- Administrators can mark kudos as hidden.
+- Hidden kudos remain stored but are not visible to regular users.
+- Moderation metadata (admin ID and timestamp) is recorded.
+
+#### Security and Access
+- Only admin role can access moderation actions.
+- Inputs validated server side to prevent misuse.
+- Rate limiting prevents spam submissions.
 
 ---
 
@@ -91,7 +153,7 @@ Returns a list of users for dropdown selection.
 
 <!-- ARCHITECT UPDATE: Moderation endpoint -->
 #### PATCH /api/kudos/:id/moderate
-Allows an administrator to hide or update visibility of a kudos message.
+Allows an administrator to update visibility of a kudos message.
 
 Body:
 - is_visible
@@ -124,9 +186,9 @@ Authorization:
 - Ensure authenticated sessions before allowing submissions.
 
 <!-- ARCHITECT UPDATE -->
-- Role-based access control to restrict moderation features to administrators.
-- Rate limiting to prevent spam submissions.
-- Content filtering checks before storing kudos messages.
+- Role based access control for moderation features.
+- Rate limiting to reduce spam behaviour.
+- Content filtering checks before storing kudos.
 
 ---
 
@@ -158,8 +220,9 @@ Authorization:
 - CI/CD pipeline integration.
 - Environment configuration for database credentials.
 
-## Reflection
+---
 
+## Reflection
 
 Initial idea -> “just a kudos feature”  
 Architect thinking -> realised missing concerns like moderation, misuse, and edge cases.
@@ -167,5 +230,3 @@ Architect thinking -> realised missing concerns like moderation, misuse, and edg
 Spec-first approach -> forced clearer thinking before coding, which made implementation smoother and less ambiguous.
 
 Big takeaway -> working with AI shifts the role from writing code to guiding decisions and thinking about system risks early.
-
-
